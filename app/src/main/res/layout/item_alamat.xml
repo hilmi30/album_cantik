@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_atas_nama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nama_lengkap"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_no_telp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_telp" />
+
+        <TextView
+            android:id="@+id/tv_alamat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alamat" />
+
+        <TextView
+            android:id="@+id/tv_provinsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/provinsi" />
+
+        <TextView
+            android:id="@+id/tv_kabupaten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/kabupaten" />
+
+        <TextView
+            android:id="@+id/tv_kecamatan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/kecamatan" />
+
+        <TextView
+            android:id="@+id/tv_kode_pos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/kode_pos" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status"
+            android:textAlignment="textEnd"
+            android:textColor="@color/redAccent" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".activity.KonfirmasiActivity">
+
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/camera"
+        android:keepScreenOn="true"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:contentDescription="@string/image_desc"
+        android:src="@drawable/placeholder"
+        android:scaleType="centerCrop"
+        android:id="@+id/img_bukti_transfer"
+        android:visibility="gone"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/foto_bukti_transfer"
+        android:layout_below="@id/camera"
+        android:textAlignment="center"
+        android:padding="16dp"/>
+
+    <Button
+        android:layout_margin="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/accent_round"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ambil_foto"
+        android:id="@+id/btn_ambil_foto"
+        android:layout_above="@+id/btn_kirim"/>
+
+    <Button
+        android:visibility="gone"
+        android:layout_margin="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/accent_round"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ambil_foto_lagi"
+        android:id="@+id/btn_ambil_foto_lagi"
+        android:layout_above="@+id/btn_kirim"/>
+
+    <Button
+        android:layout_margin="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/accent_round"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/kirim"
+        android:id="@+id/btn_kirim"/>
+
+</RelativeLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:icon="@drawable/ic_description_black_24dp"
+        android:title="@string/order"
+        android:id="@+id/order"
+        app:showAsAction="ifRoom"/>
+
+    <item android:icon="@drawable/action_draft_icon"
+        android:title="@string/draft"
+        android:id="@+id/draft"
+        app:showAsAction="always"/>
+
+    <item android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/akun"
+        android:id="@+id/account"
+        app:showAsAction="ifRoom"/>
+</menu>
