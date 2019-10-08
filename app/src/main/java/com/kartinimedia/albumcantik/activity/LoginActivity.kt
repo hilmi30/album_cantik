@@ -88,11 +88,11 @@ class LoginActivity : AppCompatActivity(), LoginView {
         }
 
         btn_kirim_email.onClick {
-            alertCustom(getString(R.string.reset_password), 1)
+            alertCustom(getString(R.string.resend_email_verifikasi), 1)
         }
 
         btn_lupa_password.onClick {
-            alertCustom(getString(R.string.resend_email_verifikasi), 2)
+            alertCustom(getString(R.string.reset_password), 2)
         }
     }
 

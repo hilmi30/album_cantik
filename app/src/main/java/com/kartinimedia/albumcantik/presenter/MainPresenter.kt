@@ -56,7 +56,7 @@ class MainPresenter: BasePresenter<MainView> {
                 },
                 onError = {
                     if (it is HttpException)
-                        this.view?.error(context.getString(R.string.user_login_tidak_benar))
+                        this.view?.error(context.getString(R.string.terjadi_kesalahan))
                     else if (it is UnknownHostException || it is TimeoutException || it is SocketTimeoutException || it is ConnectException)
                         this.view?.error(context.getString(R.string.tidak_ada_koneksi))
 

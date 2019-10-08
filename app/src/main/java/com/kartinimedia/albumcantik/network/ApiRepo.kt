@@ -11,7 +11,7 @@ import retrofit2.http.Multipart
 
 interface ApiRepo {
     @FormUrlEncoded
-    @POST("index.php?r=auth/signup")
+    @POST("auth/signup")
     fun signup(
         @Field("username") username: String,
         @Field("email") email: String,
@@ -21,14 +21,14 @@ interface ApiRepo {
     ): Observable<SignupModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=auth/login")
+    @POST("auth/login")
     fun login(
         @Field("username") username: String,
         @Field("password") password: String
     ): Observable<LoginModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=auth/update-my-profile")
+    @POST("auth/update-my-profile")
     fun updateProfile(
         @Query("access-token") accessToken: String,
         @Field("gender_id") genderId: Int?,
@@ -40,38 +40,38 @@ interface ApiRepo {
     ): Observable<UpdateProfileModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=auth/resend-verification-email")
+    @POST("auth/resend-verification-email")
     fun resendEmail(
         @Field("email") email: String
     ): Observable<ResendEmailModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=auth/forgot-password")
+    @POST("auth/forgot-password")
     fun lupaPass(
         @Field("email") email: String
     ): Observable<ForgotPassModel>
 
-    @GET("index.php?r=gender/gender")
+    @GET("gender/gender")
     fun getGender(): Observable<GetGenderModel>
 
-    @GET("index.php?r=category/category")
+    @GET("category/category")
     fun getAllCategory(
         @Query("page") page: Int
     ): Observable<AllCategoryModel>
 
-    @POST("index.php?r=product/photobook")
+    @POST("product/photobook")
     fun getProduct(
         @Query("ProductSearch[kategori_produk_id]") kategoriId: Int,
         @Query("page") page: Int
     ): Observable<ProductModel>
 
-    @POST("index.php?r=product/photobook")
+    @POST("product/photobook")
     fun getProductById(
         @Query("ProductSearch[id]") productId: Int
     ): Observable<ProductModel>
 
     @Multipart
-    @POST("index.php?r=upload/upload2")
+    @POST("upload/upload2")
     fun uploadPhoto(
         @Part file: MultipartBody.Part,
         @Query("access-token") accessToken: String,
@@ -79,37 +79,37 @@ interface ApiRepo {
         @Part("number") number: Int
     ): Observable<UploadModel>
 
-    @GET("index.php?r=upload/get-product-draft")
+    @GET("upload/get-product-draft")
     fun getAllDraft(
         @Query("access-token") accessToken: String
     ): Observable<DraftModel>
 
-    @GET("index.php?r=upload/get-draft-by-product")
+    @GET("upload/get-draft-by-product")
     fun getDraftByProductId(
         @Query("access-token") accessToken: String,
         @Query("product_id") productId: Int
     ): Observable<DraftByProductIdModel>
 
-    @GET("index.php?r=alamat")
+    @GET("alamat")
     fun getAlamat(
         @Query("access-token") accessToken: String
     ): Observable<AlamatListModel>
 
-    @POST("index.php?r=wilayah/provinsi")
+    @POST("wilayah/provinsi")
     fun getProvinsi(): Observable<LokasiModel>
 
-    @POST("index.php?r=wilayah/kabupaten")
+    @POST("wilayah/kabupaten")
     fun getKabupaten(
         @Query("KabupatenSearch[id_prov]") idProv: Int
     ): Observable<LokasiModel>
 
-    @POST("index.php?r=wilayah/kecamatan")
+    @POST("wilayah/kecamatan")
     fun getKecamatan(
         @Query("KecamatanSearch[id_kab]") idKab: Int
     ): Observable<LokasiModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=alamat/create")
+    @POST("alamat/create")
     fun addAlamat(
         @Query("access-token") accessToken: String,
         @Field("alamat") alamat: String,
@@ -122,7 +122,7 @@ interface ApiRepo {
     ): Observable<AlamatModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=alamat/update")
+    @POST("alamat/update")
     fun updateAlamat(
         @Query("access-token") accessToken: String,
         @Query("id") alamatId: Int,
@@ -135,14 +135,14 @@ interface ApiRepo {
         @Field("kode_pos") kodePos: String
     ): Observable<AlamatModel>
 
-    @POST("index.php?r=alamat/delete")
+    @POST("alamat/delete")
     fun deleteAlamat(
         @Query("access-token") accessToken: String,
         @Query("id") alamatId: Int
     ): Observable<AlamatListModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=order/create")
+    @POST("order/create")
     fun addOrder(
         @Query("access-token") accessToken: String,
         @Field("jumlah_order") jumlahOrder: Int,
@@ -160,44 +160,44 @@ interface ApiRepo {
         @Field("kode_unik") kodeUnik: Int
     ): Observable<OrderModel>
 
-    @GET("index.php?r=alamat")
+    @GET("alamat")
     fun detailAlamat(
         @Query("access-token") accessToken: String,
         @Query("AlamatSearch[id]") alamatSearch: Int
     ): Observable<AlamatListModel>
 
-    @POST("index.php?r=payment/payment")
+    @POST("payment/payment")
     fun getPayment(
         @Query("PaymentSearch[parent_id]") id: Int
     ): Observable<PaymentModel>
 
     @FormUrlEncoded
-    @POST("index.php?r=upload/hapus-draft")
+    @POST("upload/hapus-draft")
     fun hapusDraft(
         @Query("access-token") accessToken: String,
         @Field("product_id") productId: Int
     ): Observable<DraftModel>
 
-    @POST("index.php?r=order/order")
+    @POST("order/order")
     fun listOrder(
         @Query("access-token") accessToken: String,
         @Query("page") page: Int
     ): Observable<ListOrderModel>
 
     @Multipart
-    @POST("index.php?r=konfirmasi-pembayaran/create")
+    @POST("konfirmasi-pembayaran/create")
     fun konfirmasiPembayaran(
         @Query("access-token") accessToken: String,
         @Part("tbl_order_id") orderId: Int,
         @Part file: MultipartBody.Part
     ): Observable<PembayaranModel>
 
-    @POST("index.php?r=order/delete")
+    @POST("order/delete")
     fun deleteOrder(
         @Query("access-token") accessToken: String,
         @Query("id") id: Int
     ): Observable<OrderModel>
 
-    @GET("index.php?r=slider/slider")
+    @GET("slider/slider")
     fun getPromo(): Observable<PromoModel>
 }

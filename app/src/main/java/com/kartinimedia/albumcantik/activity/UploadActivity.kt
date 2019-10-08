@@ -69,6 +69,8 @@ class UploadActivity : AppCompatActivity(), UploadView {
     private lateinit var alertUpload: DialogInterface
     private lateinit var database: SQLHelper
 
+    private lateinit var loading: KProgressHUD
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +133,8 @@ class UploadActivity : AppCompatActivity(), UploadView {
     override fun onAttachView() {
         presenter.onAttach(this)
 
+        loading = kProgressHUD(this, "Resize Gambar")
+
         database = SQLHelper(this)
         database.createTable(DraftSqlModel::class)
 
@@ -154,15 +158,15 @@ class UploadActivity : AppCompatActivity(), UploadView {
             imgPreview.remove(it)
             previewAdapter.notifyItemChanged(it)
 
-            val product = database.get(DraftSqlModel::class) {
-                eq("productId", productId)
-            }
-
-            product?.forEach { data ->
-                if (data.imageKey == it) {
-                    database.delete(data)
-                }
-            }
+//            val product = database.get(DraftSqlModel::class) {
+//                eq("productId", productId)
+//            }
+//
+//            product?.forEach { data ->
+//                if (data.imageKey == it) {
+//                    database.delete(data)
+//                }
+//            }
         }
 
         rv_preview.apply {
@@ -230,14 +234,14 @@ class UploadActivity : AppCompatActivity(), UploadView {
             presenter.getDraftByProductId(this, productId)
         } else {
             btn_upload_ulang.hilang()
-            val draft = database.get(DraftSqlModel::class) {
-                eq("productId", productId)
-            }
-
-            draft?.forEach {
-                imgPreview[(it.imageKey as Int).minus(1)] = it.image as String
-                previewAdapter.notifyDataSetChanged()
-            }
+//            val draft = database.get(DraftSqlModel::class) {
+//                eq("productId", productId)
+//            }
+//
+//            draft?.forEach {
+//                imgPreview[(it.imageKey as Int).minus(1)] = it.image as String
+//                previewAdapter.notifyDataSetChanged()
+//            }
         }
 
         btn_upload_ulang.onClick {
@@ -489,7 +493,7 @@ class UploadActivity : AppCompatActivity(), UploadView {
         }
 
         if (size.toDouble() > 2048) {
-            val resizedImage = Resizer(this)
+            val resizedImage = Resizer(this@UploadActivity)
                 .setTargetLength(2000)
                 .setQuality(100)
                 .setSourceImage(file)
@@ -506,27 +510,27 @@ class UploadActivity : AppCompatActivity(), UploadView {
         rv_preview.scrollToPosition(getIndex().plus(1))
         previewAdapter.notifyDataSetChanged()
 
-        val count = database.count(DraftSqlModel::class) {
-            eq("productId", productId)
-        }
-
-        val product = database.get(DraftSqlModel::class) {
-            eq("productId", productId)
-        }
-
-        if (count >= 1) {
-            product?.forEach {
-                if (it.imageKey == getIndex()) {
-                    database.delete(it)
-                }
-            }
-
-            val data = DraftSqlModel(imageKey = getIndex(), productId = productId, image = image)
-            database.insert(data)
-        } else {
-            val data = DraftSqlModel(imageKey = getIndex(), productId = productId, image = image)
-            database.insert(data)
-        }
+//        val count = database.count(DraftSqlModel::class) {
+//            eq("productId", productId)
+//        }
+//
+//        val product = database.get(DraftSqlModel::class) {
+//            eq("productId", productId)
+//        }
+//
+//        if (count >= 1) {
+//            product?.forEach {
+//                if (it.imageKey == getIndex()) {
+//                    database.delete(it)
+//                }
+//            }
+//
+//            val data = DraftSqlModel(imageKey = getIndex(), productId = productId, image = image)
+//            database.insert(data)
+//        } else {
+//            val data = DraftSqlModel(imageKey = getIndex(), productId = productId, image = image)
+//            database.insert(data)
+//        }
 
         if (isDraft) checkImgChanged()
     }
