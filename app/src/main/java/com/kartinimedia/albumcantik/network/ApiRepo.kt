@@ -74,6 +74,7 @@ interface ApiRepo {
     @POST("upload/upload2")
     fun uploadPhoto(
         @Part file: MultipartBody.Part,
+        @Part file_compress: MultipartBody.Part,
         @Query("access-token") accessToken: String,
         @Part("product_id") productId: Int,
         @Part("number") number: Int

@@ -66,13 +66,14 @@ class UploadPresenter: BasePresenter<UploadView> {
     fun upload(
         context: Context,
         images: MultipartBody.Part,
+        imagesCompress: MultipartBody.Part,
         productId: Int,
         accessToken: String,
         number: Int,
         index: Int,
         size: Int
     ) {
-        dispo = Const.services.uploadPhoto(images, accessToken, productId, number)
+        dispo = Const.services.uploadPhoto(images, imagesCompress, accessToken, productId, number)
             .timeout(500, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())

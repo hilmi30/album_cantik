@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kartinimedia.albumcantik.R
+import com.kartinimedia.albumcantik.model.ImageModel
 import com.kartinimedia.albumcantik.utils.hilang
 import com.kartinimedia.albumcantik.utils.terlihat
 import com.squareup.picasso.NetworkPolicy
@@ -15,7 +16,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class PreviewAdapter(
     private val length: Int,
-    private val datas: HashMap<Int, String>,
+    private val datas: HashMap<Int, ImageModel>,
     private val listener: (Int) -> Unit
 )
     : RecyclerView.Adapter<PreviewAdapter.ViewHolder>() {
@@ -34,7 +35,7 @@ class PreviewAdapter(
     override fun getItemCount(): Int = length
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(datas[position])
+        holder.bindItem(datas[position]?.img)
 
         holder.itemView.tv_page_count.text = "${position.plus(1)}"
         holder.itemView.onClick {
@@ -49,7 +50,7 @@ class PreviewAdapter(
         if (index == position) {
             holder.itemView.img_preview.setBackgroundResource(R.drawable.border)
 
-            if (datas[position].isNullOrEmpty()) {
+            if (datas[position]?.img.isNullOrEmpty()) {
                 holder.itemView.lyt_delete.hilang()
             } else {
                 holder.itemView.lyt_delete.terlihat()

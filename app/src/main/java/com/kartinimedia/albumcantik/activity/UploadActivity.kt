@@ -8,11 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
@@ -45,10 +47,11 @@ class UploadActivity : AppCompatActivity(), UploadView {
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
-    private val imgPreview: HashMap<Int, String> = hashMapOf()
-    private val imgChanged: HashMap<Int, String> = hashMapOf()
-    private val imgGallery: MutableList<GalleryModel> = mutableListOf()
+    private val imgPreview: HashMap<Int, ImageModel> = hashMapOf()
+    private val imgChanged: HashMap<Int, ImageModel> = hashMapOf()
+
     private var imageList: ArrayList<ImageData> = arrayListOf()
+    private val imgGallery: MutableList<GalleryModel> = mutableListOf()
 
     private lateinit var galleryAdapter: GalleryAdapter
     private lateinit var previewAdapter: PreviewAdapter
@@ -75,6 +78,7 @@ class UploadActivity : AppCompatActivity(), UploadView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         onAttachView()
     }
 
@@ -157,27 +161,17 @@ class UploadActivity : AppCompatActivity(), UploadView {
             // fungsi hapus foto preview
             imgPreview.remove(it)
             previewAdapter.notifyItemChanged(it)
-
-//            val product = database.get(DraftSqlModel::class) {
-//                eq("productId", productId)
-//            }
-//
-//            product?.forEach { data ->
-//                if (data.imageKey == it) {
-//                    database.delete(data)
-//                }
-//            }
         }
 
         rv_preview.apply {
             adapter = previewAdapter
-            layoutManager = LinearLayoutManager(this@UploadActivity, LinearLayout.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(this@UploadActivity, RecyclerView.HORIZONTAL, false)
             addItemDecoration(ItemDecoratorHorizontal(16))
             setHasFixedSize(true)
         }
 
         btn_upload.onClick {
-            if (!checkJumlahFoto()) return@onClick
+//            if (!checkJumlahFoto()) return@onClick
 
             if (isDraft) {
                 if (imgChanged.isEmpty())
@@ -234,14 +228,6 @@ class UploadActivity : AppCompatActivity(), UploadView {
             presenter.getDraftByProductId(this, productId)
         } else {
             btn_upload_ulang.hilang()
-//            val draft = database.get(DraftSqlModel::class) {
-//                eq("productId", productId)
-//            }
-//
-//            draft?.forEach {
-//                imgPreview[(it.imageKey as Int).minus(1)] = it.image as String
-//                previewAdapter.notifyDataSetChanged()
-//            }
         }
 
         btn_upload_ulang.onClick {
@@ -280,20 +266,7 @@ class UploadActivity : AppCompatActivity(), UploadView {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun upload(data: HashMap<Int, String>) {
-
-        var valid = true
-        data.forEach {
-            val file = File(it.value)
-            val fileSize = file.length() / 1024
-
-            if (fileSize < 1024) valid = false
-        }
-
-        if (!valid) {
-            alertSize()
-            return
-        }
+    private fun upload(data: HashMap<Int, ImageModel>) {
 
         alert {
             message = getString(R.string.yakin_upload)
@@ -322,7 +295,7 @@ class UploadActivity : AppCompatActivity(), UploadView {
     override fun showDraft(files: List<DataDraftByProductId>?) {
         imgPreview.clear()
         files?.forEach {
-            imgPreview[(it.number.toInt()).minus(1)] = it.image
+            imgPreview[(it.number.toInt()).minus(1)] = ImageModel(it.image, it.image)
             previewAdapter.notifyDataSetChanged()
         }
     }
@@ -380,11 +353,15 @@ class UploadActivity : AppCompatActivity(), UploadView {
         val key = imageList[index].key
         val value = imageList[index].value
 
-        val file = File(value)
+        val file = File(value.img)
         val image = RequestBody.create(MediaType.parse("image/*"), file)
         val imageData = MultipartBody.Part.createFormData("file", file.name, image)
 
-        presenter.upload(this@UploadActivity, imageData, productId,
+        val fileCompress = File(value.imgCompress)
+        val imageCompress = RequestBody.create(MediaType.parse("image/*"), fileCompress)
+        val imageDataCompress = MultipartBody.Part.createFormData("file_compress", file.name, imageCompress)
+
+        presenter.upload(this@UploadActivity, imageData, imageDataCompress, productId,
             getToken(this@UploadActivity), key.plus(1), index, size)
     }
 
@@ -492,6 +469,12 @@ class UploadActivity : AppCompatActivity(), UploadView {
             return
         }
 
+        val compress = Resizer(this@UploadActivity)
+            .setTargetLength(1000)
+            .setQuality(50)
+            .setSourceImage(file)
+            .resizedFile
+
         if (size.toDouble() > 2048) {
             val resizedImage = Resizer(this@UploadActivity)
                 .setTargetLength(2000)
@@ -499,40 +482,22 @@ class UploadActivity : AppCompatActivity(), UploadView {
                 .setSourceImage(file)
                 .resizedFile
 
-            imgChanged[getIndex()] = resizedImage.path
-            imgPreview[getIndex()] = resizedImage.path
+            imgChanged[getIndex()] = ImageModel(resizedImage.path, compress.path)
+            imgPreview[getIndex()] = ImageModel(resizedImage.path, compress.path)
         } else {
-            imgChanged[getIndex()] = image
-            imgPreview[getIndex()] = image
+            imgChanged[getIndex()] = ImageModel(image, compress.path)
+            imgPreview[getIndex()] = ImageModel(image, compress.path)
         }
 
         previewAdapter.indexPlusOne()
         rv_preview.scrollToPosition(getIndex().plus(1))
         previewAdapter.notifyDataSetChanged()
 
-//        val count = database.count(DraftSqlModel::class) {
-//            eq("productId", productId)
-//        }
-//
-//        val product = database.get(DraftSqlModel::class) {
-//            eq("productId", productId)
-//        }
-//
-//        if (count >= 1) {
-//            product?.forEach {
-//                if (it.imageKey == getIndex()) {
-//                    database.delete(it)
-//                }
-//            }
-//
-//            val data = DraftSqlModel(imageKey = getIndex(), productId = productId, image = image)
-//            database.insert(data)
-//        } else {
-//            val data = DraftSqlModel(imageKey = getIndex(), productId = productId, image = image)
-//            database.insert(data)
-//        }
-
         if (isDraft) checkImgChanged()
+    }
+
+    private fun compressImage(file: File) {
+
     }
 
     private fun getIndex(): Int {

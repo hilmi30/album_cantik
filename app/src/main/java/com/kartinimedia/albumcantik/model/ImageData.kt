@@ -2,5 +2,5 @@ package com.kartinimedia.albumcantik.model
 
 data class ImageData(
     var key: Int = 0,
-    var value: String = ""
+    var value: ImageModel = ImageModel()
 )
