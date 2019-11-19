@@ -17,7 +17,10 @@ import android.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 import android.graphics.BitmapFactory
+import com.kartinimedia.albumcantik.R
+import retrofit2.HttpException
 import java.io.*
+import java.net.ConnectException
 
 
 fun View.terlihat() {
@@ -210,4 +213,8 @@ fun checkRole(context: Context): Int {
         Const.reseller -> role = 1
     }
     return role
+}
+
+fun checkError(it: Throwable): Boolean {
+    return it is ConnectException || it is HttpException
 }

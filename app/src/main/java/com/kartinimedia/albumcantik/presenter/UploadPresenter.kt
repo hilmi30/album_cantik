@@ -5,6 +5,7 @@ import com.kartinimedia.albumcantik.R
 import com.kartinimedia.albumcantik.contract.BasePresenter
 import com.kartinimedia.albumcantik.view.UploadView
 import com.kartinimedia.albumcantik.utils.Const
+import com.kartinimedia.albumcantik.utils.checkError
 import com.kartinimedia.albumcantik.utils.getToken
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -50,10 +51,11 @@ class UploadPresenter: BasePresenter<UploadView> {
                     this.view?.hideLoadingSlider()
                 },
                 onError = {
-                    if (it is HttpException)
-                        this.view?.error(context.getString(R.string.terjadi_kesalahan), Const.slider)
-                    else if (it is UnknownHostException || it is TimeoutException || it is SocketTimeoutException || it is ConnectException)
-                        this.view?.error(context.getString(R.string.tidak_ada_koneksi), Const.slider)
+                    if (checkError(it))
+                        view?.error(context.getString(R.string.tidak_ada_koneksi), Const.slider)
+                    else
+                        view?.error(context.getString(R.string.terjadi_kesalahan), Const.slider)
+
 
                     this.view?.hideLoadingSlider()
                 },
@@ -87,10 +89,10 @@ class UploadPresenter: BasePresenter<UploadView> {
                     } else view?.error(context.getString(R.string.upload_gagal), Const.upload)
                 },
                 onError = {
-                    if (it is HttpException)
-                        view?.error(context.getString(R.string.upload_gagal), Const.upload)
-                    else if (it is UnknownHostException || it is TimeoutException || it is SocketTimeoutException || it is ConnectException)
-                        view?.error(context.getString(R.string.upload_gagal), Const.upload)
+                    if (checkError(it))
+                        view?.error(context.getString(R.string.tidak_ada_koneksi), Const.upload)
+                    else
+                        view?.error(context.getString(R.string.terjadi_kesalahan), Const.upload)
                 },
                 onComplete = {
                     //
@@ -110,9 +112,10 @@ class UploadPresenter: BasePresenter<UploadView> {
                     else view?.error(context.getString(R.string.terjadi_kesalahan), Const.draft)
                 },
                 onError = {
-                    if (it is UnknownHostException || it is TimeoutException
-                        || it is SocketTimeoutException || it is ConnectException || it is HttpException)
-                        this.view?.error(context.getString(R.string.tidak_ada_koneksi), Const.draft)
+                    if (checkError(it))
+                        view?.error(context.getString(R.string.tidak_ada_koneksi), Const.draft)
+                    else
+                        view?.error(context.getString(R.string.terjadi_kesalahan), Const.draft)
                 },
                 onComplete = {
                     //

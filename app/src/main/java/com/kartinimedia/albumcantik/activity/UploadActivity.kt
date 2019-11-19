@@ -171,7 +171,7 @@ class UploadActivity : AppCompatActivity(), UploadView {
         }
 
         btn_upload.onClick {
-//            if (!checkJumlahFoto()) return@onClick
+            if (!checkJumlahFoto()) return@onClick
 
             if (isDraft) {
                 if (imgChanged.isEmpty())

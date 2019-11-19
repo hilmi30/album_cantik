@@ -4,6 +4,7 @@ import android.content.Context
 import com.kartinimedia.albumcantik.R
 import com.kartinimedia.albumcantik.contract.BasePresenter
 import com.kartinimedia.albumcantik.utils.Const
+import com.kartinimedia.albumcantik.utils.checkError
 import com.kartinimedia.albumcantik.utils.getToken
 import com.kartinimedia.albumcantik.view.KonfirmasiView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -51,10 +52,10 @@ class KonfirmasiPresenter: BasePresenter<KonfirmasiView> {
                     view?.hideLoading()
                 },
                 onError = {
-                    if (it is HttpException)
-                        view?.error(context.getString(R.string.terjadi_kesalahan))
-                    else if (it is UnknownHostException || it is TimeoutException || it is SocketTimeoutException || it is ConnectException)
+                    if (checkError(it))
                         view?.error(context.getString(R.string.tidak_ada_koneksi))
+                    else
+                        view?.error(context.getString(R.string.terjadi_kesalahan))
 
                     view?.hideLoading()
                 },

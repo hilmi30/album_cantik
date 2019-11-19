@@ -5,6 +5,7 @@ import com.kartinimedia.albumcantik.R
 import com.kartinimedia.albumcantik.view.AccountView
 import com.kartinimedia.albumcantik.contract.BasePresenter
 import com.kartinimedia.albumcantik.utils.Const
+import com.kartinimedia.albumcantik.utils.checkError
 import com.kartinimedia.albumcantik.utils.getToken
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -58,10 +59,10 @@ class AccountPresenter: BasePresenter<AccountView> {
                     this.view?.hideLoading()
                 },
                 onError = {
-                    if (it is HttpException)
-                        this.view?.error(context.getString(R.string.terjadi_kesalahan))
-                    else if (it is UnknownHostException || it is TimeoutException || it is SocketTimeoutException || it is ConnectException)
-                        this.view?.error(context.getString(R.string.tidak_ada_koneksi))
+                    if (checkError(it))
+                        view?.error(context.getString(R.string.tidak_ada_koneksi))
+                    else
+                        view?.error(context.getString(R.string.terjadi_kesalahan))
 
                     this.view?.hideLoading()
                 },

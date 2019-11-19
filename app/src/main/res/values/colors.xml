@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#FF9700</color>
     <!--<color name="colorPrimaryDark">#FF9700</color>-->
-    <color name="colorPrimaryDark">#60c1ce</color>
-    <color name="colorAccent">#60C1CE</color>
-    <color name="redAccent">#60c1ce</color>
+    <color name="colorPrimaryDark">#FF808B</color>
+    <color name="colorAccent">#FF808B</color>
+    <color name="redAccent">#FF808B</color>
     <color name="blackTransparent5">#1A000000</color>
     <color name="blackTransparent10">#1A000000</color>
     <color name="blackTransparent20">#33000000</color>

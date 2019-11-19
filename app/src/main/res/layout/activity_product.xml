@@ -8,12 +8,11 @@
     tools:context=".activity.ProductActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        app:elevation="0dp"
         android:background="@android:color/white"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <!--6gkcdt-->
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_product"

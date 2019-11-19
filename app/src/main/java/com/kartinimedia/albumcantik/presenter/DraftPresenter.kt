@@ -5,11 +5,13 @@ import com.kartinimedia.albumcantik.R
 import com.kartinimedia.albumcantik.contract.BasePresenter
 import com.kartinimedia.albumcantik.view.DraftView
 import com.kartinimedia.albumcantik.utils.Const
+import com.kartinimedia.albumcantik.utils.checkError
 import com.kartinimedia.albumcantik.utils.getToken
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import okhttp3.internal.Util
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -49,9 +51,10 @@ class DraftPresenter: BasePresenter<DraftView> {
                     else view?.dataKosong()
                 },
                 onError = {
-                    if (it is UnknownHostException || it is TimeoutException
-                        || it is SocketTimeoutException || it is ConnectException || it is HttpException)
-                        this.view?.error(context.getString(R.string.tidak_ada_koneksi))
+                    if (checkError(it))
+                        view?.error(context.getString(R.string.tidak_ada_koneksi))
+                    else
+                        view?.error(context.getString(R.string.terjadi_kesalahan))
 
                     view?.hideLoading()
                 },
@@ -75,9 +78,11 @@ class DraftPresenter: BasePresenter<DraftView> {
                     else view?.error(context.getString(R.string.terjadi_kesalahan))
                 },
                 onError = {
-                    if (it is UnknownHostException || it is TimeoutException
-                        || it is SocketTimeoutException || it is ConnectException || it is HttpException)
-                        this.view?.error(context.getString(R.string.tidak_ada_koneksi))
+                    if (checkError(it))
+                        view?.error(context.getString(R.string.tidak_ada_koneksi))
+                    else
+                        view?.error(context.getString(R.string.terjadi_kesalahan))
+
 
                     view?.hideLoading()
                 },
