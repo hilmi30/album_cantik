@@ -78,7 +78,7 @@ class PreviewAdapter(
 
             Picasso.get()
                 .load(path + data)
-                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                //.networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                 .fit()
                 .centerCrop()
                 .placeholder(R.drawable.placeholder)
