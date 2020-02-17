@@ -175,4 +175,11 @@
     <string name="title_promo">Title Promo</string>
     <string name="desc_promo">Desc Promo</string>
     <string name="order_sekarang">Order Sekarang</string>
+    <string name="upload_berhasil_foto_blm_lengkap">Upload berhasil, tetapi anda belum mengisi semua foto, silahkan lengkapi di Draft</string>
+    <string name="cara_pembayaran">Cara Pembayaran</string>
+    <string name="kode_pembayaran">Kode</string>
+    <string name="kode_pembayaran_angka">521</string>
+    <string name="harga_belum_termasuk_kode_unik">*harga belum termasuk kode unik</string>
+    <string name="order_jumlah_order">Jml Order</string>
+    <string name="terima_kasih_telah_melakukan_pemesanan_proses_berikutnya_silahkan_melakukan_pembayaran_melalui_transfer_ke_salah_satu_nomor_rekening_di_bawah_ini">Terima kasih telah melakukan pemesanan, proses berikutnya silahkan melakukan pembayaran melalui transfer ke salah satu nomor rekening di bawah ini</string>
 </resources>

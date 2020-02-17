@@ -66,6 +66,7 @@ class OrderActivity : AppCompatActivity(), OrderView {
     private var orderPhone = ""
     private var orderEmail = ""
     private var atasNama = ""
+    private var totalHarga = 0
 
     private val permissions = arrayOf(
         Manifest.permission.CAMERA,
@@ -110,6 +111,7 @@ class OrderActivity : AppCompatActivity(), OrderView {
         }
 
         if (isDetailOrder) {
+            // jika detail order
             orderId = intent.getIntExtra(Const.id, 0)
             jumlahOrder = intent.getIntExtra(Const.jumlahOrder, 1)
             kodeOrder = intent.getStringExtra(Const.kodeOrder)
@@ -127,6 +129,7 @@ class OrderActivity : AppCompatActivity(), OrderView {
             atasNama = intent.getStringExtra(Const.atasNama)
             orderPhone = intent.getStringExtra(Const.noHp)
             orderEmail = intent.getStringExtra(Const.email)
+            hargaUnik = intent.getStringExtra(Const.kodePembayaran).toInt()
 
             tv_title_pilih_pembayaran.hilang()
             spinner_payment.hilang()
@@ -134,8 +137,10 @@ class OrderActivity : AppCompatActivity(), OrderView {
             number_pick.hilang()
             lyt_info_order.terlihat()
             btn_batal_pesan.terlihat()
-            number_pick.value = jumlahOrder
+            tv_harga_belum_unik.hilang()
 
+            number_pick.value = jumlahOrder
+            tv_kode_pembayaran.text = hargaUnik.toString()
             tv_atas_nama_order.text = atasNama
             tv_no_telp_order.text = orderPhone
             tv_alamat_order.text = orderAddress
@@ -145,13 +150,19 @@ class OrderActivity : AppCompatActivity(), OrderView {
             tv_kode_pos_order.text = kodePos.toString()
 
             when (checkRole(this)) {
-                0 -> tv_total_harga.text = IDUang.parsingRupiah(harga * jumlahOrder)
-                1 -> tv_total_harga.text = IDUang.parsingRupiah(hargaReseller * jumlahOrder)
+                0 -> {
+                    totalHarga = harga * jumlahOrder
+                    tv_total_harga.text = IDUang.parsingRupiah(totalHarga + hargaUnik)
+                }
+                1 -> {
+                    totalHarga = hargaReseller * jumlahOrder
+                    tv_total_harga.text = IDUang.parsingRupiah(totalHarga + hargaUnik)
+                }
             }
 
             edt_note_order.isEnabled = false
 
-            if (statusLunas == 0) btn_konfirmasi.terlihat() else btn_konfirmasi.hilang()
+            if (statusLunas == 0) btn_cara_pembayaran.terlihat() else btn_cara_pembayaran.hilang()
             if (statusLunas == 2) btn_batal_pesan.hilang() else btn_batal_pesan.terlihat()
 
             tv_kode_detail_order.text = kodeOrder
@@ -161,17 +172,21 @@ class OrderActivity : AppCompatActivity(), OrderView {
             tv_metode_pembayaran_detail_order.text = metodePembayaran
             tv_jumlah_detail_order.text = jumlahOrder.toString()
             edt_note_order.setText(orderNote)
+            tv_jumlah_order.text = jumlahOrder.toString()
 
         } else {
+            // jika bukan detail order
             presenter.detailAlamat(this, getAlamatUtama(this))
 
             tv_title_pilih_pembayaran.terlihat()
             spinner_payment.terlihat()
             btn_ganti_alamat.terlihat()
             lyt_info_order.hilang()
-            btn_konfirmasi.hilang()
+            btn_cara_pembayaran.hilang()
             btn_batal_pesan.hilang()
+            lyt_kode_unik.hilang()
             edt_note_order.isEnabled = true
+            lyt_jumlah_order.hilang()
 
             when (checkRole(this)) {
                 0 -> tv_total_harga.text = IDUang.parsingRupiah(harga)
@@ -205,11 +220,15 @@ class OrderActivity : AppCompatActivity(), OrderView {
             startActivity<AlamatActivity>()
         }
 
-        btn_konfirmasi.onClick {
+        btn_cara_pembayaran.onClick {
             Permissions.check(this@OrderActivity, permissions, null, null, object: PermissionHandler() {
                 override fun onGranted() {
-                    startActivity<KonfirmasiActivity>(
-                        Const.id to orderId
+                    startActivity<DoneOrderActivity>(
+                        Const.dataBank to dataBank,
+                        Const.dataRekening to dataRekening,
+                        Const.hargaUnik to hargaUnik,
+                        Const.id to orderId,
+                        Const.totalHarga to totalHarga
                     )
                     finish()
                 }
@@ -284,7 +303,8 @@ class OrderActivity : AppCompatActivity(), OrderView {
             Const.dataBank to dataBank,
             Const.dataRekening to dataRekening,
             Const.hargaUnik to hargaUnik,
-            Const.id to dataOrder.id
+            Const.id to dataOrder.id,
+            Const.totalHarga to totalHarga
         )
         finish()
     }
@@ -360,11 +380,11 @@ class OrderActivity : AppCompatActivity(), OrderView {
                         isCancelable = false
                         message = getString(R.string.yakin_kirim_order)
                         positiveButton(R.string.ya) {
-                            val unik = (100 until 999).random()
+                            hargaUnik = (100 until 999).random()
 
                             when (checkRole(this@OrderActivity)) {
-                                0 -> hargaUnik = (harga * jumlahOrder) + unik
-                                1 -> hargaUnik = (hargaReseller * jumlahOrder) + unik
+                                0 -> totalHarga = (harga * jumlahOrder)
+                                1 -> totalHarga = (hargaReseller * jumlahOrder)
                             }
 
                             presenter.addOrder(
@@ -381,7 +401,7 @@ class OrderActivity : AppCompatActivity(), OrderView {
                                 kodePos = tv_kode_pos_order.text.toString().toInt(),
                                 orderAddress = tv_alamat_order.text.toString(),
                                 orderNote = edt_note_order.text.toString(),
-                                kodeUnik = unik
+                                kodeUnik = hargaUnik
                             )
                         }
                         negativeButton(R.string.batal) {

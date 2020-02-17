@@ -31,6 +31,7 @@ class DoneOrderActivity : AppCompatActivity() {
 
         val dataBank = intent.getStringArrayListExtra(Const.dataBank)
         val dataRekening = intent.getStringArrayListExtra(Const.dataRekening)
+        val totalHarga = intent.getIntExtra(Const.totalHarga, 0)
         val hargaUnik = intent.getIntExtra(Const.hargaUnik, 0)
         val orderId = intent.getIntExtra(Const.id, 0)
 
@@ -51,11 +52,10 @@ class DoneOrderActivity : AppCompatActivity() {
         }
 
         btn_kembali.onClick {
-            startActivity<MainActivity>()
-            finish()
+            onBackPressed()
         }
 
-        tv_harga_unik.text = IDUang.parsingRupiah(hargaUnik)
+        tv_harga_unik.text = IDUang.parsingRupiah(totalHarga + hargaUnik)
 
         btn_konfirmasi_done_order.onClick {
             Permissions.check(this@DoneOrderActivity, permissions, null, null, object: PermissionHandler() {

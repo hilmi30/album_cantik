@@ -72,5 +72,7 @@ class Const {
         const val idKab = "idKab"
         const val idKec = "idKec"
         const val desc = "desc"
+        const val kodePembayaran = "kodePembayaran"
+        const val totalHarga = "totalHarga"
     }
 }

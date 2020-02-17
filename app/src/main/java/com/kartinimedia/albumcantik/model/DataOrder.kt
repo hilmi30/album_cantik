@@ -67,5 +67,8 @@ data class DataOrder (
     var jumlahOrder: Int = 0,
 
     @SerializedName("detail_order")
-    var detailOrder: DetailOrder = DetailOrder()
+    var detailOrder: DetailOrder = DetailOrder(),
+
+    @SerializedName("kode_unik")
+    var kodeUnik: String = ""
 )

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -171,9 +172,8 @@ class UploadActivity : AppCompatActivity(), UploadView {
         }
 
         btn_upload.onClick {
-            if (!checkJumlahFoto()) return@onClick
-
             if (isDraft) {
+                if (!checkJumlahFoto()) return@onClick
                 if (imgChanged.isEmpty())
                     goToOrderActivity()
                 else
@@ -263,6 +263,7 @@ class UploadActivity : AppCompatActivity(), UploadView {
             Const.image to image,
             Const.isDetailOrder to false
         )
+        finish()
     }
 
     @SuppressLint("SetTextI18n")
@@ -329,16 +330,31 @@ class UploadActivity : AppCompatActivity(), UploadView {
     override fun suksesUploadSemua() {
         setProgressUpload()
 
+        val isComplete: Boolean
+        val msg: String
+        val msgBtn: String
+
+        if (imgPreview.size != totalFoto) {
+            msg = getString(R.string.upload_berhasil_foto_blm_lengkap)
+            msgBtn = "Ke Draft"
+            isComplete = false
+        }
+        else {
+            msg = getString(R.string.upload_berhasil)
+            msgBtn = "Isi form order"
+            isComplete = true
+        }
+
         Handler().postDelayed({
             alertUpload.dismiss()
             alert {
                 isCancelable = false
-                message = getString(R.string.upload_berhasil)
-                positiveButton("Isi form order") {
-                    if (!checkJumlahFoto()) {
-                        return@positiveButton
-                    }
-                    goToOrderActivity()
+                message = msg
+                positiveButton(msgBtn) {
+                    if (isComplete)
+                        goToOrderActivity()
+                    else
+                        goToDraftActivity()
                 }
                 negativeButton("Nanti saja") {
                     it.dismiss()
@@ -346,6 +362,12 @@ class UploadActivity : AppCompatActivity(), UploadView {
             }.show()
         }, 3000)
 
+    }
+
+    private fun goToDraftActivity() {
+        val i = Intent(this, DraftActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(i)
     }
 
     private fun uploadImage(index: Int, size: Int) {
@@ -494,10 +516,6 @@ class UploadActivity : AppCompatActivity(), UploadView {
         previewAdapter.notifyDataSetChanged()
 
         if (isDraft) checkImgChanged()
-    }
-
-    private fun compressImage(file: File) {
-
     }
 
     private fun getIndex(): Int {

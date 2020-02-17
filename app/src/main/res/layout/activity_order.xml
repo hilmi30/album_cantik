@@ -154,13 +154,16 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:id="@+id/img_product_order"
                         android:contentDescription="@string/image_desc"
-                        android:layout_width="130dp"
-                        android:layout_height="100dp"
+                        android:layout_width="120dp"
+                        android:layout_height="90dp"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/placeholder"/>
 
                     <LinearLayout
+                        android:padding="8dp"
                         android:layout_gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -203,6 +206,50 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/lyt_kode_unik"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="@string/kode_pembayaran" />
+
+                            <TextView
+                                android:id="@+id/tv_kode_pembayaran"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/kode_pembayaran_angka"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_jumlah_order"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="@string/order_jumlah_order" />
+
+                            <TextView
+                                android:id="@+id/tv_jumlah_order"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/kode_pembayaran_angka"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_width="match_parent"
@@ -228,6 +275,17 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_harga_belum_unik"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAlignment="textEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:textSize="12sp"
+                android:text="@string/harga_belum_termasuk_kode_unik"/>
 
             <com.travijuu.numberpicker.library.NumberPicker
                 android:id="@+id/number_pick"
@@ -431,11 +489,11 @@
 
             <Button
                 android:visibility="gone"
-                android:id="@+id/btn_konfirmasi"
+                android:id="@+id/btn_cara_pembayaran"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/accent_round"
-                android:text="@string/konfirmasi_pembayaran"
+                android:text="@string/cara_pembayaran"
                 android:textColor="@android:color/white"
                 android:layout_margin="8dp"/>
 

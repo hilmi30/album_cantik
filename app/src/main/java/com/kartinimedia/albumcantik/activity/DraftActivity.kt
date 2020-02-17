@@ -13,6 +13,7 @@ import com.kartinimedia.albumcantik.view.DraftView
 import kotlinx.android.synthetic.main.activity_draft.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class DraftActivity : AppCompatActivity(), DraftView {
 
@@ -24,6 +25,10 @@ class DraftActivity : AppCompatActivity(), DraftView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_draft)
+    }
+
+    override fun onStart() {
+        super.onStart()
         onAttachView()
     }
 
@@ -130,5 +135,10 @@ class DraftActivity : AppCompatActivity(), DraftView {
 
     override fun suksesHapusDraft() {
         presenter.getAllDraft(this)
+    }
+
+    override fun onBackPressed() {
+        startActivity<MainActivity>()
+        finish()
     }
 }

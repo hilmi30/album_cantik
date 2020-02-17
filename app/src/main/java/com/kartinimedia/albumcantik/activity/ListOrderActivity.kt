@@ -67,6 +67,7 @@ class ListOrderActivity : AppCompatActivity(), ListOrderView {
                 Const.alamat to it.orderAddress,
                 Const.noHp to it.orderPhone,
                 Const.email to it.orderEmail,
+                Const.kodePembayaran to it.kodeUnik,
                 // sebagai detail order
                 Const.isDetailOrder to true
             )
